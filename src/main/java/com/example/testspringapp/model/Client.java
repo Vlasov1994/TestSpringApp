@@ -22,12 +22,6 @@ public class Client {
     @JoinColumn(name = "org_legal_form_id")
     private OrgLegalForm orgLegalForm;
 
-    public Client(String name, String shortName, OrgLegalForm orgLegalForm) {
-        this.name = name;
-        this.shortName = shortName;
-        this.orgLegalForm = orgLegalForm;
-    }
-
     public Client() {
 
     }

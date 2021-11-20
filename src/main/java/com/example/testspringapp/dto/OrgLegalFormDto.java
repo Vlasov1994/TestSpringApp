@@ -1,10 +1,7 @@
 package com.example.testspringapp.dto;
 
-import com.example.testspringapp.model.OrgLegalForm;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @NoArgsConstructor
