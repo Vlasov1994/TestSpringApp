@@ -28,14 +28,14 @@ public class ClientController {
                                                    @RequestParam(value = "keyword", required = false) String keyword) {
         List<Client> clients = findClients(field, keyword);
         List<ClientDto> clientDtoList = new ArrayList<>();
-        clients.forEach(client -> clientDtoList.add(clientMapper.convertToClientDto(client)));
+        clients.forEach(client -> clientDtoList.add(clientMapper.toDto(client)));
         ApiResponseDto<List<ClientDto>> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDtoList);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseDto<ClientDto>> showForm(@PathVariable("id") Long id) {
-        ClientDto clientDto = clientMapper.convertToClientDto(clientService.findById(id));
+        ClientDto clientDto = clientMapper.toDto(clientService.findById(id));
         ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
@@ -48,17 +48,17 @@ public class ClientController {
 
     @GetMapping("/{id}/edit")
     public ResponseEntity<ApiResponseDto<ClientDto>> showEditForm(@PathVariable("id") Long id) {
-        ClientDto clientDto = clientMapper.convertToClientDto(clientService.findById(id));
+        ClientDto clientDto = clientMapper.toDto(clientService.findById(id));
         ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/edit")
     public ResponseEntity<ApiResponseDto<ClientDto>> update(@PathVariable("id") Long id, @RequestBody ClientDto clientDTO) {
-        Client client = clientMapper.convertToClient(clientDTO);
+        Client client = clientMapper.toModel(clientDTO);
         client.setId(id);
         client = clientService.save(client);
-        ClientDto clientDto = clientMapper.convertToClientDto(client);
+        ClientDto clientDto = clientMapper.toDto(client);
         ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
@@ -70,10 +70,10 @@ public class ClientController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ApiResponseDto<ClientDto>> create(@RequestBody ClientDto clientDTO) {
-        Client client = clientMapper.convertToClient(clientDTO);
+    public ResponseEntity<ApiResponseDto<ClientDto>> create(@RequestBody ClientDto clientDto) {
+        Client client = clientMapper.toModel(clientDto);
         client = clientService.save(client);
-        ClientDto clientDto = clientMapper.convertToClientDto(client);
+        clientDto = clientMapper.toDto(client);
         ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }

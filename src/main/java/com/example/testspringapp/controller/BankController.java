@@ -29,68 +29,68 @@ public class BankController {
                                                                  @RequestParam(value = "keyword",
                                                                                required = false) String keyword) {
         List<Bank> banks = findBanks(field, keyword);
-        List<BankDto> clientDtoList = new ArrayList<>();
-        banks.forEach(bank -> clientDtoList.add(bankMapper.convertToBankDto(bank)));
-        ApiResponseDto<List<BankDto>> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDtoList);
-        return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
-    }
-/*
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<ClientDto>> showForm(@PathVariable("id") Long id) {
-        ClientDto clientDto = clientMapper.convertToClientDto(clientService.findById(id));
-        ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+        List<BankDto> BankDtoList = new ArrayList<>();
+        banks.forEach(bank -> BankDtoList.add(bankMapper.toDto(bank)));
+        ApiResponseDto<List<BankDto>> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), BankDtoList);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponseDto<BankDto>> showForm(@PathVariable("id") Long id) {
+        BankDto bankDto = bankMapper.toDto(bankService.findById(id));
+        ApiResponseDto<BankDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), bankDto);
+        return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+    }
+    
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        clientService.deleteById(id);
-        return "redirect:clients/";
+        bankService.deleteById(id);
+        return "redirect:banks/";
     }
 
     @GetMapping("/{id}/edit")
-    public ResponseEntity<ApiResponseDto<ClientDto>> showEditForm(@PathVariable("id") Long id) {
-        ClientDto clientDto = clientMapper.convertToClientDto(clientService.findById(id));
-        ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+    public ResponseEntity<ApiResponseDto<BankDto>> showEditForm(@PathVariable("id") Long id) {
+        BankDto bankDto = bankMapper.toDto(bankService.findById(id));
+        ApiResponseDto<BankDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), bankDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/edit")
-    public ResponseEntity<ApiResponseDto<ClientDto>> update(@PathVariable("id") Long id,
-                                                            @RequestBody ClientDto clientDTO) {
-        Client client = clientMapper.convertToClient(clientDTO);
-        client.setId(id);
-        client = clientService.save(client);
-        ClientDto clientDto = clientMapper.convertToClientDto(client);
-        ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+    public ResponseEntity<ApiResponseDto<BankDto>> update(@PathVariable("id") Long id,
+                                                            @RequestBody BankDto bankDto) {
+        Bank bank = bankMapper.toModel(bankDto);
+        bank.setId(id);
+        bank = bankService.save(bank);
+        bankDto = bankMapper.toDto(bank);
+        ApiResponseDto<BankDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), bankDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/new")
-    public ResponseEntity<ApiResponseDto<ClientDto>> showCreateForm() {
-        ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), new ClientDto());
+    public ResponseEntity<ApiResponseDto<BankDto>> showCreateForm() {
+        ApiResponseDto<BankDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), new BankDto());
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ApiResponseDto<ClientDto>> create(@RequestBody ClientDto clientDTO) {
-        Client client = clientMapper.convertToClient(clientDTO);
-        client = clientService.save(client);
-        ClientDto clientDto = clientMapper.convertToClientDto(client);
-        ApiResponseDto<ClientDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+    public ResponseEntity<ApiResponseDto<BankDto>> create(@RequestBody BankDto bankDto) {
+        Bank bank = bankMapper.toModel(bankDto);
+        bank = bankService.save(bank);
+        bankDto = bankMapper.toDto(bank);
+        ApiResponseDto<BankDto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), bankDto);
         return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
     }
-*/
+    
     private List<Bank> findBanks(String field, String keyword) {
 
-        List<Bank> clients;
+        List<Bank> banks;
         if (field == null && keyword == null) {
-            clients = bankService.findAll();
+            banks = bankService.findAll();
         } else if (field != null && keyword == null) {
-            clients = bankService.findAllWithSorting(field);
+            banks = bankService.findAllWithSorting(field);
         } else {
-            clients = bankService.findAllWithSortingAndFilters(field, keyword);
+            banks = bankService.findAllWithSortingAndFilters(field, keyword);
         }
-        return clients;
+        return banks;
     }
 }
