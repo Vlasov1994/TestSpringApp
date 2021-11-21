@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "org_legal_form")
-public class OrgLegalForm {
+public class OrgLegalForm implements InterfaceModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

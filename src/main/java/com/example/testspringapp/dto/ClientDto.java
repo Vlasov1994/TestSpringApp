@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ClientDto {
+public class ClientDto implements InterfaceDto {
 
     private Long id;
     private String name;

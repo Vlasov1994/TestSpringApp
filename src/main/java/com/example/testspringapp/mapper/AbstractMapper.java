@@ -1,25 +1,23 @@
 package com.example.testspringapp.mapper;
 
+import com.example.testspringapp.dto.InterfaceDto;
+import com.example.testspringapp.model.InterfaceModel;
+import com.example.testspringapp.util.Util;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class AbstractMapper<Model, Dto> {
+public abstract class AbstractMapper<T extends InterfaceModel, Y extends InterfaceDto> {
 
     @Autowired
     protected ModelMapper mapper;
 
-    public Dto toDto(Model model) {
-        return mapper.map(model, (Type) getGenericParameterClass(this.getClass(), 1));
+    public Y toDto(T t) {
+        return mapper.map(t, (Type) Util.getGenericParameterClass(this.getClass(), 1));
     }
 
-    public Model toModel(Dto dto) {
-        return mapper.map(dto, (Type) getGenericParameterClass(this.getClass(), 0));
-    }
-
-    protected static Class<?> getGenericParameterClass(Class<?> actualClass, int parameterIndex) {
-        return (Class<?>) ((ParameterizedType) actualClass.getGenericSuperclass()).getActualTypeArguments()[parameterIndex];
+    public T toModel(Y y) {
+        return mapper.map(y, (Type) Util.getGenericParameterClass(this.getClass(), 0));
     }
 }

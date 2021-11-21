@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class OrgLegalFormDto {
+public class OrgLegalFormDto implements InterfaceDto {
 
     private Long id;
     private String name;
