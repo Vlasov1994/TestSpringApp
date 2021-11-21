@@ -5,7 +5,6 @@ import com.example.testspringapp.dto.ClientDto;
 import com.example.testspringapp.mapper.ClientMapper;
 import com.example.testspringapp.model.Client;
 import com.example.testspringapp.service.ClientService;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
