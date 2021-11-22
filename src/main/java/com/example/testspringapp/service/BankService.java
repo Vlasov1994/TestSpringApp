@@ -20,6 +20,7 @@ public class BankService extends AbstractService<Bank> {
     public Bank findByBic (String bic) {
         return ((BankRepository) jpaRepository).findByBic(bic).orElse(null);
     }
+
     public List<Bank> findAllWithSortingAndFilters(String field, String keyword) {
         field = field == null || field.equals("") ? "id" : field;
         return ((BankRepository) jpaRepository).findAll(Sort.by(field), keyword);

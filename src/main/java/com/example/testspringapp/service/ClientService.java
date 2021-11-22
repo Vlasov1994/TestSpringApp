@@ -17,30 +17,9 @@ public class ClientService extends AbstractService<Client> {
     public ClientService(@Qualifier("clientRepository") JpaRepository<Client, Long> jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
-/*
-    public Client findById(Long id) {
-        return (Client) jpaRepository.findById(id).orElse(null);
-    }
 
-    public List<Client> findAll() {
-        return jpaRepository.findAll();
-    }
-
-    public List<Client> findAllWithSorting(String field) {
-        return jpaRepository.findAll(Sort.by(field));
-    }
-*/
     public List<Client> findAllWithSortingAndFilters(String field, String keyword) {
         field = field == null || field.equals("") ? "id" : field;
         return ((ClientRepository) jpaRepository).findAll(Sort.by(field), keyword);
     }
-/*
-    public Client save(Client client) {
-        return (Client) jpaRepository.save(client);
-    }
-
-    public void deleteById(Long id) {
-        jpaRepository.deleteById(id);
-    }
-*/
 }
