@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class OrgLegalFormDto implements InterfaceDto {
+public class BankDto implements InterfaceDto {
 
     private Long id;
     private String name;
-    private String ident;
+    private String bic;
 }

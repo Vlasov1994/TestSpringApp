@@ -2,28 +2,26 @@ package com.example.testspringapp.mapper;
 
 import com.example.testspringapp.dto.ClientDto;
 import com.example.testspringapp.model.Client;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClientMapper {
-
-    @Autowired
-    private ModelMapper mapper;
+public class ClientMapper extends AbstractMapper<Client, ClientDto>{
 
     @Autowired
     private OrgLegalFormMapper orgLegalFormMapper;
 
-    public ClientDto convertToClientDto(Client client) {
+    @Override
+    public ClientDto toDto(Client client) {
         ClientDto clientDto = mapper.map(client, ClientDto.class);
-        clientDto.setOrgLegalFormDto(orgLegalFormMapper.convertToOgrLegalFormDto(client.getOrgLegalForm()));
+        clientDto.setOrgLegalFormDto(orgLegalFormMapper.toDto(client.getOrgLegalForm()));
         return clientDto;
     }
 
-    public Client convertToClient(ClientDto clientDto) {
+    @Override
+    public Client toModel(ClientDto clientDto) {
         Client client = mapper.map(clientDto, Client.class);
-        client.setOrgLegalForm(orgLegalFormMapper.convertToOgrLegalForm(clientDto.getOrgLegalFormDto()));
+        client.setOrgLegalForm(orgLegalFormMapper.toModel(clientDto.getOrgLegalFormDto()));
         return client;
     }
 }

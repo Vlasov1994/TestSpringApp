@@ -1,7 +1,7 @@
 package com.example.testspringapp.service;
 
-import com.example.testspringapp.model.Client;
-import com.example.testspringapp.repository.ClientRepository;
+import com.example.testspringapp.model.Contribution;
+import com.example.testspringapp.repository.ContributionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ClientService extends AbstractService<Client> {
+public class ContributionService extends AbstractService<Contribution> {
 
     @Autowired
-    public ClientService(@Qualifier("clientRepository") JpaRepository<Client, Long> jpaRepository) {
+    public ContributionService(@Qualifier("contributionRepository") JpaRepository<Contribution, Long> jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 
-    public List<Client> findAllWithSortingAndFilters(String field, String keyword) {
+    public List<Contribution> findAllWithSortingAndFilters(String field, String keyword) {
         field = field == null || field.equals("") ? "id" : field;
-        return ((ClientRepository) jpaRepository).findAll(Sort.by(field), keyword);
+        return ((ContributionRepository) jpaRepository).findAll(Sort.by(field), keyword);
     }
 }

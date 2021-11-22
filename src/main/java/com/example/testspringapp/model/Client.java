@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "client")
-public class Client {
+public class Client implements InterfaceModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
