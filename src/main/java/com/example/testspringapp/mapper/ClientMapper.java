@@ -2,7 +2,6 @@ package com.example.testspringapp.mapper;
 
 import com.example.testspringapp.dto.ClientDto;
 import com.example.testspringapp.model.Client;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

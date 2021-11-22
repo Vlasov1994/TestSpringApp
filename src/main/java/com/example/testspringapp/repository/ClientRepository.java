@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    @Query("select c from Client c where concat(c.id, c.name, c.shortName, c.address, c.orgLegalForm.id) like %?1%")
+    @Query("select c from Client c where concat(c.id, c.name, c.shortName, c.address, c.orgLegalForm.name) like %?1%")
     List<Client> findAll(Sort sort, String keyword);
 }
