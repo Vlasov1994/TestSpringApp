@@ -6,6 +6,7 @@ import com.example.testspringapp.mapper.AbstractMapper;
 import com.example.testspringapp.model.InterfaceModel;
 import com.example.testspringapp.service.AbstractService;
 import com.example.testspringapp.util.Util;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,32 +34,58 @@ public abstract class AbstractController<Model extends InterfaceModel, Dto exten
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseDto<Dto>> showForm(@PathVariable("id") Long id) {
-        Dto clientDto = mapper.toDto(service.findById(id));
-        ApiResponseDto<Dto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
-        return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        try {
+            Dto clientDto = mapper.toDto(service.findById(id));
+            ApiResponseDto<Dto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+            return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(new ApiResponseDto<>(HttpStatus.BAD_REQUEST.value(),
+                               "Объект с идентификатором " + id + " не найден.",
+                               null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        service.deleteById(id);
-        return "redirect:/";
+    public ResponseEntity<ApiResponseDto<String>> delete(@PathVariable("id") Long id) {
+        try {
+            service.deleteById(id);
+            return new ResponseEntity<>(new ApiResponseDto<>(HttpStatus.PERMANENT_REDIRECT.value(),
+                               null,
+                               "redirect:/"), HttpStatus.PERMANENT_REDIRECT);
+        } catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity<>(new ApiResponseDto<>(HttpStatus.BAD_REQUEST.value(),
+                               "Не удалось удалить объект. Объект с идентификатором " + id + " не найден.",
+                               null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}/edit")
     public ResponseEntity<ApiResponseDto<Dto>> showEditForm(@PathVariable("id") Long id) {
-        Dto clientDto = mapper.toDto(service.findById(id));
-        ApiResponseDto<Dto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
-        return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        try {
+            Dto clientDto = mapper.toDto(service.findById(id));
+            ApiResponseDto<Dto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+            return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(new ApiResponseDto<>(HttpStatus.BAD_REQUEST.value(),
+                               "Объект с идентификатором " + id + " не найден.",
+                               null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/{id}/edit")
     public ResponseEntity<ApiResponseDto<Dto>> update(@PathVariable("id") Long id, @RequestBody Dto clientDTO) {
-        Model model = mapper.toModel(clientDTO);
-        model.setId(id);
-        model = service.save(model);
-        Dto clientDto = mapper.toDto(model);
-        ApiResponseDto<Dto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
-        return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        try {
+            Model model = mapper.toModel(clientDTO);
+            model.setId(id);
+            model = service.save(model);
+            Dto clientDto = mapper.toDto(model);
+            ApiResponseDto<Dto> apiResponseDto = new ApiResponseDto<>(HttpStatus.OK.value(), clientDto);
+            return new ResponseEntity<>(apiResponseDto, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(new ApiResponseDto<>(HttpStatus.BAD_REQUEST.value(),
+                               "Объект с идентификатором " + id + " не найден.",
+                               null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/new")
