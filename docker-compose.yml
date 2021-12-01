@@ -18,7 +18,11 @@ services:
   db:
     image: 'postgres:13.1-alpine'
     container_name: db
+    ports:
+      - "8081:5432"
     environment:
       - POSTGRES_USER=dev
       - POSTGRES_PASSWORD=Password
       - POSTGRES_DB=devDbPanel
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
